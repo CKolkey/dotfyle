@@ -1,4 +1,4 @@
-import type { User } from "@prisma/client";
+import type { Media, User } from "@prisma/client";
 import { PUBLIC_ADMIN_USER_GITHUB_ID } from '$env/static/public';
 
 // source https://gist.github.com/jweyrich/f39c496b83f73d2c5b0587f4d841651b
@@ -54,7 +54,10 @@ export function isAdmin(user: User): boolean {
   return user.githubId === ADMIN_GITHUB_ID;
 }
 
-export function getMediaType(url: string): 'image' | 'video' {
+export function getMediaType(media: Media): 'image' | 'video' {
+  const {url, type} = media
+  if (type.includes("video")) return "video"
+  if (type.includes("image")) return "image"
   if(url.endsWith(".mov") || url.endsWith(".mp4")) {
     return 'video'
   }
